@@ -153,6 +153,58 @@ export function Works() {
         </motion.div>
       </div>
 
+      <div className="border-t border-white/10 mt-16" />
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="mt-16"
+      >
+        <p className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-6">快速导航</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Link
+            href="/projects/yield-prediction"
+            data-cursor-hover
+            className="group p-4 border border-white/10 rounded-lg hover:border-accent/50 hover:bg-accent/5 transition-all duration-300"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <span className="w-2 h-2 bg-green-500 rounded-full" />
+              <span className="font-mono text-xs text-accent">SOTA</span>
+            </div>
+            <h4 className="font-sans text-lg mb-1 group-hover:text-white transition-colors">产率预测模型</h4>
+            <p className="text-muted-foreground text-sm">RF Residual Quantile YDR</p>
+          </Link>
+
+          <Link
+            href="/projects/retrosynthesis"
+            data-cursor-hover
+            className="group p-4 border border-white/10 rounded-lg hover:border-accent/50 hover:bg-accent/5 transition-all duration-300"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <span className="w-2 h-2 bg-blue-500 rounded-full" />
+              <span className="font-mono text-xs text-accent">LLM Agent</span>
+            </div>
+            <h4 className="font-sans text-lg mb-1 group-hover:text-white transition-colors">AI逆合成</h4>
+            <p className="text-muted-foreground text-sm">RetrosynthesisClaw 已开源</p>
+          </Link>
+
+          <Link
+            href="/projects/semcond"
+            data-cursor-hover
+            className="group p-4 border border-white/10 rounded-lg hover:border-accent/50 hover:bg-accent/5 transition-all duration-300"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <span className="w-2 h-2 bg-purple-500 rounded-full" />
+              <span className="font-mono text-xs text-accent">NLP</span>
+            </div>
+            <h4 className="font-sans text-lg mb-1 group-hover:text-white transition-colors">SemCond技术</h4>
+            <p className="text-muted-foreground text-sm">实验文本语义编码</p>
+          </Link>
+        </div>
+      </motion.div>
+
       <div className="border-t border-white/10" />
     </section>
   )
