@@ -175,6 +175,12 @@ export function Works() {
             </div>
             <h4 className="font-sans text-lg mb-1 group-hover:text-white transition-colors">产率预测模型</h4>
             <p className="text-muted-foreground text-sm">RF Residual Quantile YDR</p>
+            <div className="mt-3 flex items-center gap-1 text-accent group-hover:translate-x-1 transition-transform">
+              <span className="font-mono text-xs">立即查看</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
           </Link>
 
           <Link
@@ -188,6 +194,12 @@ export function Works() {
             </div>
             <h4 className="font-sans text-lg mb-1 group-hover:text-white transition-colors">AI逆合成</h4>
             <p className="text-muted-foreground text-sm">RetrosynthesisClaw 已开源</p>
+            <div className="mt-3 flex items-center gap-1 text-accent group-hover:translate-x-1 transition-transform">
+              <span className="font-mono text-xs">立即查看</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
           </Link>
 
           <Link
@@ -201,6 +213,12 @@ export function Works() {
             </div>
             <h4 className="font-sans text-lg mb-1 group-hover:text-white transition-colors">SemCond技术</h4>
             <p className="text-muted-foreground text-sm">实验文本语义编码</p>
+            <div className="mt-3 flex items-center gap-1 text-accent group-hover:translate-x-1 transition-transform">
+              <span className="font-mono text-xs">立即查看</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
           </Link>
         </div>
       </motion.div>

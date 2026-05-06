@@ -161,9 +161,19 @@ export default function RetrosynthesisClawPage() {
           className="border-t border-white/10 pt-16 mb-16"
         >
           <h2 className="font-mono text-xs tracking-[0.3em] text-accent mb-6">项目链接</h2>
-          <p className="text-muted-foreground leading-relaxed mb-4">
-            GitHub 仓库：https://github.com/lipz666/RetrosynthesisClaw
-          </p>
+          <div className="space-y-4">
+            <p className="text-muted-foreground leading-relaxed">
+              GitHub 仓库：<a href="https://github.com/lipz666/RetrosynthesisClaw" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">https://github.com/lipz666/RetrosynthesisClaw</a>
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              项目文档：<a href="/WORKFLOW_DOCUMENT.pdf" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline flex items-center gap-2">
+                <span>WORKFLOW_DOCUMENT.pdf</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </a>
+            </p>
+          </div>
         </motion.div>
 
         <motion.div

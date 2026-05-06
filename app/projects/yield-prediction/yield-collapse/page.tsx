@@ -150,49 +150,29 @@ export default function YieldCollapsePage() {
               </div>
 
               <div className="border border-white/10 rounded-lg p-6 mt-8">
-                <h3 className="font-sans text-xl font-light mb-4 text-accent">Variance Rescaling 算法详解</h3>
-                <div className="space-y-6">
-                  <div>
-                    <h4 className="font-sans text-lg font-light mb-3 text-white">1. 缩放系数 α 的计算</h4>
-                    <p className="text-muted-foreground leading-relaxed mb-4">
-                      在代码函数 fit_variance_rescaling_alpha 中，缩放系数 α 是基于验证集（Calibration set）的方差比例计算的：
+                <h3 className="font-sans text-xl font-light mb-4 text-accent">Variance Rescaling 算法思路</h3>
+                <div className="space-y-6 text-muted-foreground leading-relaxed">
+                  <p>
+                    Variance Rescaling 方法的核心思想是通过调整模型预测值的方差，使其与真实产率的方差相匹配，从而恢复预测分布的多样性，缓解预测坍缩问题。
+                  </p>
+                  
+                  <div className="bg-white/5 rounded-lg p-4">
+                    <p className="text-white font-mono text-sm text-center mb-4">α = (σ²<sub>true</sub> / σ²<sub>pred</sub>)<sup>β</sup></p>
+                    <p className="text-sm">
+                      首先计算缩放系数 α，它是真实产率方差与预测方差比值的 β 次幂。参数 β 控制缩放强度，当 β=0.5 时，预测值的标准差将被拉伸到与真实值一致。
                     </p>
-                    <div className="bg-white/5 rounded-lg p-4 mb-4 text-center">
-                      <p className="text-white font-mono text-sm">α = (σ²<sub>true</sub> / σ²<sub>pred</sub>)<sup>β</sup></p>
-                    </div>
-                    <p className="text-muted-foreground leading-relaxed mb-2">其中：</p>
-                    <ul className="text-muted-foreground text-sm space-y-1 list-disc list-inside">
-                      <li>σ²<sub>true</sub>：验证集中真实产率（Yield）的方差</li>
-                      <li>σ²<sub>pred</sub>：验证集中模型原始预测值的方差</li>
-                      <li>β：超参数（控制缩放强度），在代码中由 cfg.variance_rescale_beta 指定（默认 0.3）。当 β=0.5 时，预测值的标准差将被拉伸到与真实值一致</li>
-                    </ul>
                   </div>
-
-                  <div>
-                    <h4 className="font-sans text-lg font-light mb-3 text-white">2. 预测值的重缩放转换</h4>
-                    <p className="text-muted-foreground leading-relaxed mb-4">
-                      在代码函数 apply_variance_rescaling 中，对测试集的新预测值执行以下线性变换：
+                  
+                  <div className="bg-white/5 rounded-lg p-4">
+                    <p className="text-white font-mono text-sm text-center mb-4">ŷ<sub>rescaled</sub> = ŷ̄<sub>pred</sub> + α · (ŷ<sub>original</sub> - ŷ̄<sub>pred</sub>)</p>
+                    <p className="text-sm">
+                      然后以验证集预测值的均值为中心点，对原始预测值进行线性重缩放，使预测分布的方差与真实分布对齐。
                     </p>
-                    <div className="bg-white/5 rounded-lg p-4 mb-4 text-center">
-                      <p className="text-white font-mono text-sm">ŷ<sub>rescaled</sub> = ŷ̄<sub>pred</sub> + α · (ŷ<sub>original</sub> - ŷ̄<sub>pred</sub>)</p>
-                    </div>
-                    <p className="text-muted-foreground leading-relaxed mb-2">其中：</p>
-                    <ul className="text-muted-foreground text-sm space-y-1 list-disc list-inside">
-                      <li>ŷ<sub>original</sub>：模型原始输出的预测值</li>
-                      <li>ŷ̄<sub>pred</sub>：验证集预测值的算术平均数（作为缩放的中心点）</li>
-                      <li>ŷ<sub>rescaled</sub>：重缩放后的预测值</li>
-                    </ul>
                   </div>
-
-                  <div>
-                    <h4 className="font-sans text-lg font-light mb-3 text-white">3. 数值约束（Clip）</h4>
-                    <p className="text-muted-foreground leading-relaxed mb-4">
-                      由于化学产率在物理上必须位于 [0, 100] 之间，重缩放后的值最后会经过一个截断函数：
-                    </p>
-                    <div className="bg-white/5 rounded-lg p-4 mb-4 text-center">
-                      <p className="text-white font-mono text-sm">y<sub>final</sub> = max(0, min(100, ŷ<sub>rescaled</sub>))</p>
-                    </div>
-                  </div>
+                  
+                  <p>
+                    最后，由于化学产率在物理上必须位于 [0, 100] 之间，重缩放后的预测值会经过截断处理，确保结果符合实际约束条件。
+                  </p>
                 </div>
               </div>
             </div>
