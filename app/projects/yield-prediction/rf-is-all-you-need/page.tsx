@@ -49,7 +49,7 @@ export default function RFIsAllYouNeedPage() {
           <h2 className="font-mono text-xs tracking-[0.3em] text-accent mb-6">研究背景</h2>
           <div className="max-w-4xl">
             <p className="text-muted-foreground leading-relaxed mb-8">
-              反应产率预测是化学合成中至关重要的任务，直接影响实验路线选择、资源消耗和实验效率。现有研究主要通过改进反应表征（reaction encoder）和深度学习模型来提升预测性能，但几乎普遍使用默认多层感知机（MLP）作为解码器，忽略了解码器在最终精度中可能起到的关键作用。这导致现有方法在性能提升时往往被错误归因于表征能力，而未充分考虑解码器选择的影响。
+              反应产率预测是化学合成中至关重要的任务，直接影响实验路线选择、资源消耗和实验效率。现有研究主要通过改进反应表征（reaction encoder）和深度学习模型来提升预测性能，但几乎普遍使用默认多层感知机（MLP）作为任务头，忽略了任务头在最终精度中可能起到的关键作用。这导致现有方法在性能提升时往往被错误归因于表征能力，而未充分考虑任务头选择的影响。
             </p>
             <div className="flex justify-center mb-8">
               <div className="rounded-lg overflow-hidden border border-white/10 max-w-2xl w-full">
@@ -75,7 +75,7 @@ export default function RFIsAllYouNeedPage() {
           <h2 className="font-mono text-xs tracking-[0.3em] text-accent mb-6">项目内容</h2>
           <div className="max-w-4xl">
             <p className="text-muted-foreground leading-relaxed mb-8">
-              本项目系统评估了解码器在产率预测任务中的作用，并证明<strong className="text-white">随机森林（RF）</strong>是该任务的最优解码器，实现了领域<strong className="text-accent">SOTA</strong>性能。
+              本项目系统评估了任务头在产率预测任务中的作用，并证明<strong className="text-white">随机森林（RF）</strong>是该任务的最优任务头，实现了领域<strong className="text-accent">SOTA</strong>性能。
             </p>
 
             <h3 className="font-sans text-xl font-light mb-4 text-white">1. 打破 Benchmark</h3>
@@ -122,9 +122,9 @@ export default function RFIsAllYouNeedPage() {
               </table>
             </div>
 
-            <h3 className="font-sans text-xl font-light mb-4 text-white">2. Decoder-swap 实验</h3>
+            <h3 className="font-sans text-xl font-light mb-4 text-white">2. Head-swap 实验</h3>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              在 HDA 数据集上固定反应表征，仅替换解码器（RF 与 MLP），明确显示性能提升完全来源于 RF 的解码能力，而非表征优化。
+              在 HDA 数据集上固定反应表征，仅替换任务头（RF 与 MLP），明确显示性能提升完全来源于 RF 的任务头能力，而非表征优化。
             </p>
             <div className="flex justify-center mb-8">
               <div className="rounded-lg overflow-hidden border border-white/10 max-w-2xl w-full">

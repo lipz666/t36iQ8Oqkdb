@@ -93,27 +93,31 @@ export default function ReactionConditionEncodingPage() {
             <div className="space-y-3 text-sm mb-8">
               <div className="flex items-center gap-3 p-3 border border-white/10 rounded-lg">
                 <span className="font-mono text-accent text-xs">01</span>
-                <span className="text-muted-foreground">仅使用结构特征</span>
+                <span className="text-muted-foreground">structure_only - 仅分子结构特征</span>
               </div>
               <div className="flex items-center gap-3 p-3 border border-white/10 rounded-lg">
                 <span className="font-mono text-accent text-xs">02</span>
-                <span className="text-muted-foreground">仅使用文本特征</span>
+                <span className="text-muted-foreground">text_only - 仅实验文本特征</span>
               </div>
               <div className="flex items-center gap-3 p-3 border border-white/10 rounded-lg">
                 <span className="font-mono text-accent text-xs">03</span>
-                <span className="text-muted-foreground">结构 + 原始文本向量</span>
+                <span className="text-muted-foreground">multimodal_raw_text - 结构+原始文本向量</span>
               </div>
               <div className="flex items-center gap-3 p-3 border border-white/10 rounded-lg">
                 <span className="font-mono text-accent text-xs">04</span>
-                <span className="text-muted-foreground">结构 + 降噪后的文本表示</span>
+                <span className="text-muted-foreground">multimodal_text_pca64 - 结构+PCA降维文本(64维)</span>
               </div>
               <div className="flex items-center gap-3 p-3 border border-white/10 rounded-lg">
                 <span className="font-mono text-accent text-xs">05</span>
-                <span className="text-muted-foreground">结构 + 结构化条件</span>
+                <span className="text-muted-foreground">multimodal_text_pca128 - 结构+PCA降维文本(128维)</span>
               </div>
               <div className="flex items-center gap-3 p-3 border border-white/10 rounded-lg">
                 <span className="font-mono text-accent text-xs">06</span>
-                <span className="text-muted-foreground">结构 + 结构化条件 + 文本语义表示</span>
+                <span className="text-muted-foreground">structure_plus_condition - 结构+结构化条件</span>
+              </div>
+              <div className="flex items-center gap-3 p-3 border border-accent/30 bg-accent/5 rounded-lg">
+                <span className="font-mono text-accent text-xs">07</span>
+                <span className="text-white">structure_plus_condition_plus_text_pca64 - 完整多模态融合</span>
               </div>
             </div>
           </div>
@@ -123,6 +127,27 @@ export default function ReactionConditionEncodingPage() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
+          className="border-t border-white/10 pt-16 mb-16"
+        >
+          <h2 className="font-mono text-xs tracking-[0.3em] text-accent mb-6">实验结果数据</h2>
+          <div className="max-w-4xl">
+            <div className="rounded-lg overflow-hidden border border-white/10 mb-4">
+              <img
+                src="/semcond/实验结果数据.png"
+                alt="实验结果数据"
+                className="w-full h-auto"
+              />
+            </div>
+            <p className="text-center text-muted-foreground text-sm">
+              RF在7000条来自Reaxys的DA反应数据集8:2划分测试结果
+            </p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
           className="border-t border-white/10 pt-16 mb-16"
         >
           <h2 className="font-mono text-xs tracking-[0.3em] text-accent mb-6">实验结论</h2>
@@ -148,97 +173,6 @@ export default function ReactionConditionEncodingPage() {
                   <strong className="text-accent">结论 4：</strong>在融合反应条件编码之后，产率预测性能得到<strong className="text-white">稳定改善</strong>，验证了 SemCond 在该任务上的可行性与价值
                 </p>
               </div>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="border-t border-white/10 pt-16 mb-16"
-        >
-          <h2 className="font-mono text-xs tracking-[0.3em] text-accent mb-6">实验结果数据</h2>
-          <div className="max-w-4xl">
-            <div className="border border-white/10 rounded-lg overflow-hidden mb-8">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-white/10 bg-white/5">
-                    <th className="font-mono text-xs text-muted-foreground px-4 py-3 text-left">Model</th>
-                    <th className="font-mono text-xs text-muted-foreground px-4 py-3 text-center">n_features</th>
-                    <th className="font-mono text-xs text-muted-foreground px-4 py-3 text-center">MAE</th>
-                    <th className="font-mono text-xs text-muted-foreground px-4 py-3 text-center">RMSE</th>
-                    <th className="font-mono text-xs text-muted-foreground px-4 py-3 text-center">R2</th>
-                    <th className="font-mono text-xs text-muted-foreground px-4 py-3 text-center">Spearman</th>
-                    <th className="font-mono text-xs text-muted-foreground px-4 py-3 text-center">Acc@卤10</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-white/5">
-                    <td className="px-4 py-3 text-white">structure_plus_condition_plus_text_pca64</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">4203</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">9.806795</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">13.68298</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.495293</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.709446</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.635749</td>
-                  </tr>
-                  <tr className="border-b border-white/5">
-                    <td className="px-4 py-3 text-white">multimodal_text_pca64</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">4160</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">9.859598</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">13.7174</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.492751</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.706495</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.633816</td>
-                  </tr>
-                  <tr className="border-b border-white/5">
-                    <td className="px-4 py-3 text-white">structure_plus_condition</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">4139</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">9.761611</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">13.83691</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.483873</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.698985</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.647343</td>
-                  </tr>
-                  <tr className="border-b border-white/5">
-                    <td className="px-4 py-3 text-white">multimodal_text_pca128</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">4224</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">10.07231</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">13.86096</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.482077</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.696961</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.613527</td>
-                  </tr>
-                  <tr className="border-b border-white/5">
-                    <td className="px-4 py-3 text-white">structure_only</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">4096</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">9.974921</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">14.05282</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.467641</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.679715</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.64058</td>
-                  </tr>
-                  <tr className="border-b border-white/5">
-                    <td className="px-4 py-3 text-white">multimodal_raw_text</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">4864</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">10.16119</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">14.09866</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.464162</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.66875</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.619324</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-3 text-white">text_only</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">768</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">10.71525</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">14.65889</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.420731</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.634982</td>
-                    <td className="px-4 py-3 text-center text-muted-foreground">0.577778</td>
-                  </tr>
-                </tbody>
-              </table>
             </div>
           </div>
         </motion.div>
