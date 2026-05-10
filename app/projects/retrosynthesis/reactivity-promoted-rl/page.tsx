@@ -122,27 +122,61 @@ export default function ReactivityPromotedRLPage() {
               <div className="border border-white/10 rounded-lg p-6">
                 <h4 className="text-accent font-medium mb-3">3. Reward（奖励）</h4>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  最终奖励采用加权四合一奖励机制，并加入 KL 散度惩罚以保证策略更新的稳定性：
+                  最终奖励采用加权多目标奖励机制，并加入 KL 散度惩罚以保证策略更新的稳定性：
                 </p>
-                <div className="bg-black/50 rounded-lg p-4 font-mono text-sm text-center text-accent">
+                <div className="bg-black/50 rounded-lg p-4 font-mono text-sm text-center text-accent mb-6">
                   R = 0.45·R_yield + 0.25·R_forward + 0.20·R_valid + 0.10·R_format − β·KL
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-                  <div className="text-center">
-                    <p className="text-xs text-accent">R_yield</p>
-                    <p className="text-xs text-muted-foreground">产率预测奖励</p>
+                
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    <span className="font-mono text-accent text-sm mt-1">1.</span>
+                    <div>
+                      <p className="text-white font-medium mb-1">R_yield - 产率奖励</p>
+                      <p className="text-muted-foreground text-sm">
+                        基于产率预测模型对生成反应的产率预测值，引导模型倾向于生成高产率的反应路径。
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <p className="text-xs text-accent">R_forward</p>
-                    <p className="text-xs text-muted-foreground">前向预测一致性</p>
+                  
+                  <div className="flex items-start gap-4">
+                    <span className="font-mono text-accent text-sm mt-1">2.</span>
+                    <div>
+                      <p className="text-white font-medium mb-1">R_forward - 正向反应相似度奖励</p>
+                      <p className="text-muted-foreground text-sm">
+                        将生成的反应物经过正向模型预测后，与原始目标产物进行结构相似度匹配，确保逆合成路径的可逆性。
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <p className="text-xs text-accent">R_valid</p>
-                    <p className="text-xs text-muted-foreground">结构有效性</p>
+                  
+                  <div className="flex items-start gap-4">
+                    <span className="font-mono text-accent text-sm mt-1">3.</span>
+                    <div>
+                      <p className="text-white font-medium mb-1">R_valid - 有效性奖励</p>
+                      <p className="text-muted-foreground text-sm">
+                        验证生成的反应物 SMILES 是否为有效的化学结构，排除非法或不合理的分子表示。
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <p className="text-xs text-accent">R_format</p>
-                    <p className="text-xs text-muted-foreground">格式正确性</p>
+                  
+                  <div className="flex items-start gap-4">
+                    <span className="font-mono text-accent text-sm mt-1">4.</span>
+                    <div>
+                      <p className="text-white font-medium mb-1">R_format - 格式规范奖励</p>
+                      <p className="text-muted-foreground text-sm">
+                        确保输出符合标准的反应 SMILES 格式，包括正确的分隔符和多反应物表示。
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-4">
+                    <span className="font-mono text-accent text-sm mt-1">5.</span>
+                    <div>
+                      <p className="text-white font-medium mb-1">KL 散度惩罚（β=0.02）</p>
+                      <p className="text-muted-foreground text-sm">
+                        控制策略更新步长，防止新策略与旧策略产生过大偏离，保证训练过程的稳定性。
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
