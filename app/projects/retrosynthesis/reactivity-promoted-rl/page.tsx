@@ -73,6 +73,19 @@ export default function ReactivityPromotedRLPage() {
             <p className="text-muted-foreground leading-relaxed">
               在数据层面，项目基于<strong className="text-accent">USPTO500MT</strong>数据集完成了 ReactionT5V2 的微调训练，使模型具备针对目标产物生成候选反应物的能力。该步骤为后续强化学习优化提供了初始策略模型，也为项目建立了完整的 product-to-reactants 生成基础。
             </p>
+            
+            <div className="flex justify-center mt-8">
+              <div className="rounded-lg overflow-hidden border border-white/10 max-w-3xl w-full">
+                <img
+                  src="/retro/loss_curve.png"
+                  alt="微调损失曲线"
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
+            <p className="text-center text-muted-foreground text-sm mt-4">
+              微调损失曲线
+            </p>
           </div>
         </motion.div>
 
@@ -86,9 +99,68 @@ export default function ReactivityPromotedRLPage() {
           <div className="max-w-4xl">
             <div className="border border-white/10 rounded-lg p-6 mb-6">
               <p className="text-muted-foreground leading-relaxed">
-                在初步研究阶段，项目尝试将反应产率预测作为强化学习中的奖励信号，希望模型不仅能够生成可行的候选反应，还能倾向于生成高产率方案。围绕这一目标，项目设计并测试了 yield-promoted 的强化学习流程，用于优化无模板逆合成模型的输出质量。
+                在初步研究阶段，项目尝试将反应产率预测作为强化学习中的奖励信号，希望模型不仅能够生成可行的候选反应，还能倾向于生成高产率方案。围绕这一目标，项目设计并测试了 yield-promoted 的强化学习流程，采用<strong className="text-white">PPO（Proximal Policy Optimization）</strong>算法对无模板逆合成模型进行优化。
               </p>
             </div>
+
+            <h3 className="font-sans text-lg font-light mb-4 text-white">强化学习核心设置</h3>
+            <div className="space-y-6 mb-8">
+              <div className="border border-white/10 rounded-lg p-6">
+                <h4 className="text-accent font-medium mb-3">1. Action（智能体的动作）</h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  策略网络（ReactionT5v2）接收目标产物的 SMILES 字符串作为输入，输出自主生成的反应物 SMILES 字符串。简单来说，模型的唯一动作就是：给定产物，预测可能的反应物组合。
+                </p>
+              </div>
+              
+              <div className="border border-white/10 rounded-lg p-6">
+                <h4 className="text-accent font-medium mb-3">2. State（状态）</h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  状态定义为当前要合成的目标产物的 SMILES 字符串。模型始终基于这个状态进行决策，生成对应的反应物候选。
+                </p>
+              </div>
+              
+              <div className="border border-white/10 rounded-lg p-6">
+                <h4 className="text-accent font-medium mb-3">3. Reward（奖励）</h4>
+                <p className="text-muted-foreground leading-relaxed mb-4">
+                  最终奖励采用加权四合一奖励机制，并加入 KL 散度惩罚以保证策略更新的稳定性：
+                </p>
+                <div className="bg-black/50 rounded-lg p-4 font-mono text-sm text-center text-accent">
+                  R = 0.45·R_yield + 0.25·R_forward + 0.20·R_valid + 0.10·R_format − β·KL
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                  <div className="text-center">
+                    <p className="text-xs text-accent">R_yield</p>
+                    <p className="text-xs text-muted-foreground">产率预测奖励</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-accent">R_forward</p>
+                    <p className="text-xs text-muted-foreground">前向预测一致性</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-accent">R_valid</p>
+                    <p className="text-xs text-muted-foreground">结构有效性</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-accent">R_format</p>
+                    <p className="text-xs text-muted-foreground">格式正确性</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-center mb-8">
+              <div className="rounded-lg overflow-hidden border border-white/10 max-w-3xl w-full">
+                <img
+                  src="/retro/ppo_curves.png"
+                  alt="PPO曲线"
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
+            <p className="text-center text-muted-foreground text-sm mb-8">
+              PPO曲线
+            </p>
+
             <div className="bg-accent/10 border border-accent/30 rounded-lg p-6">
               <p className="text-white/90 leading-relaxed">
                 <strong className="text-accent">实验结论：</strong>仅依赖产率预测作为奖励并不能有效提升逆合成生成的化学可靠性。其根本原因在于：现有产率预测模型主要建立在成功反应数据之上，缺乏足够的失败反应监督，因此它能够评估"已经可行的反应哪一个更优"，却难以判断"一个候选反应是否根本不可行"。这意味着产率模型本质上更像一个反应程度评估器，而不是反应可行性判别器。
